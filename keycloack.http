@@ -1,0 +1,43 @@
+@clientId=secure-api-client
+# from keycloak client credentials interface
+@clientSecret=EeNCvstsBLdJoBefaQuq7C8o0SBQwgTL
+
+### enable OIDC in Kong
+# instrospection is mandatory to be able to validate the token
+POST http://localhost:8001/routes/quarkus-route/plugins
+Content-Type: application/json
+
+{
+    "name": "oidc",
+    "config": {
+        "discovery": "http://192.168.1.42:8090/realms/secure-api/.well-known/openid-configuration",
+        "introspection_endpoint": "http://192.168.1.42:8090/realms/secure-api/protocol/openid-connect/token/introspect",
+        "client_id": "{{clientId}}",
+        "client_secret": "{{clientSecret}}",
+        "bearer_only": "yes",
+        "realm": "secure-api",
+        "scope": "openid"
+    }
+}
+
+### get token
+# @name generateToken
+# endpoint is allowed by 'Standard Token Exchange' authentication method
+# the testuser account must be fully defined (email verified, no arequired actions, ....
+POST http://localhost:8090/realms/secure-api/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+Authorization: Basic {{base64Encode admin:admin}}
+
+grant_type=password
+&client_id={{clientId}}
+&client_secret={{clientSecret}}
+&username=testuser
+&password=test123
+
+###
+
+@accessToken = {{generateToken.response.body.$.access_token}}
+
+### call secure api
+GET http://localhost:8000/quarkus-api/api/secure
+Authorization: Bearer {{accessToken}}

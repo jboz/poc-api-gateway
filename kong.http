@@ -1,0 +1,66 @@
+
+### create a service
+POST http://localhost:8001/services
+Content-Type: application/json
+
+{
+    "name": "quarkus-service",
+    "url": "http://192.168.1.42:8080"
+}
+
+### add route
+POST http://localhost:8001/services/quarkus-service/routes
+Content-Type: application/json
+
+{
+    "name": "quarkus-route",
+    "paths": ["/quarkus-api"]
+}
+
+### test backend api call via api gateway
+GET http://localhost:8000/quarkus-api/api/secure
+
+### enable key auth
+POST http://localhost:8001/routes/quarkus-route/plugins
+Content-Type: application/json
+
+{
+    "name": "key-auth"
+}
+
+### create a consumer
+POST http://localhost:8001/consumers
+Content-Type: application/json
+
+{
+    "username": "quarkus-client"
+}
+
+### generate api key
+# @name generate
+POST http://localhost:8001/consumers/quarkus-client/key-auth
+
+###
+
+@apiKey = {{generate.response.body.$.key}}
+
+### retest backend without api key
+GET http://localhost:8000/quarkus-api/api/secure
+
+### retest backend with api key
+GET http://localhost:8000/quarkus-api/api/secure
+apikey: {{apiKey}}
+
+### add rate limit
+POST http://localhost:8001/routes/quarkus-route/plugins
+Content-Type: application/json
+
+{
+    "name": "rate-limiting",
+    "config": {
+        "minute": 5,
+        "policy": "local"
+    }
+}
+
+# restest more than five calls
