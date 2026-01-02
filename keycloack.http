@@ -54,6 +54,6 @@ Authorization: Bearer {{accessToken}}
 GET http://localhost:8000/quarkus-api/api/greets
 Authorization: Bearer {{accessToken}}
 
-### call second api
+### call downstream service
 GET http://localhost:8000/quarkus-api/api/propagate
 Authorization: Bearer {{accessToken}}

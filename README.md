@@ -1,4 +1,4 @@
-# poc-quarkus-auth
+# poc-api-gateeway
 
 `mvn -pl backend-simple compile quarkus:dev`
 
@@ -9,7 +9,7 @@ Maybe the first time, the kong migration and service has to be restart
 
 http://localhost:8002
 
-Executer les commandes de kong.http
+Executer les commandes de `kong.http`.
 
 ## Keycloack
 
@@ -35,15 +35,29 @@ Executer les commandes de kong.http
    Password: test123
    Assign the user role to this user
 
-Executer les commandes de keycloack.http
+Executer les commandes de `keycloack.http`.
 
 ## Extract user info from the JWT
 
 https://quarkus.io/guides/security-oidc-bearer-token-authentication-tutorial
 
-Add `quarkus-oidc` extension and the `quarkus.oidc.auth-server-url` and `quarkus.oidc.client-id` properties to the `application.properties` file.
-After that the `UsersResource` class can be used to extract user info from the JWT.
+Add `quarkus-oidc` extension and the `quarkus.oidc.auth-server-url` and `quarkus.oidc.client-id` properties.  
+After that the `UsersResource` class can be used to extract user info from the JWT:
+
+```java
+@Inject
+SecurityIdentity securityIdentity;
+
+@Inject
+JsonWebToken jsonWebToken;
+
+@Inject
+@Claim(standard = Claims.email)
+String email;
+```
 
 ## Propagate the access token to the downstream service
 
 Execute `quarkus extension add rest-client-oidc-token-propagation` and Annotate RestClient with `@AccessToken`.
+
+`mvn -pl backend-other compile quarkus:dev`
