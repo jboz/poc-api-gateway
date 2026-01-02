@@ -1,0 +1,14 @@
+
+### enable Correlation ID in Kong
+# instrospection is mandatory to be able to validate the token
+POST http://localhost:8001/routes/quarkus-route/plugins
+Content-Type: application/json
+
+{
+    "name": "correlation-id",
+    "config": {
+        "echo_downstream": false,
+        "generator": "uuid",
+        "header_name": "x-corr-id"
+    }
+}

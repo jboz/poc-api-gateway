@@ -1,0 +1,113 @@
+// See https://go.microsoft.com/fwlink/?LinkId=733558
+// for the documentation about the tasks.json format
+{
+  "version": "2.0.0",
+  "inputs": [
+    {
+      "id": "moduleName",
+      "type": "promptString",
+      "description": "Enter the module name"
+    }
+  ],
+  "tasks": [
+    {
+      "type": "shell",
+      "isBackground": true,
+      "problemMatcher": [
+        {
+          "owner": "quarkus",
+          "fileLocation": [
+            "relative",
+            "${workspaceFolder}/src/main/resources/templates"
+          ],
+          "pattern": [
+            {
+              "regexp": "\\[(\\d+)\\]\\s(.*):(\\d+):(\\d+)\\s\\-\\s{(.*)}:\\s(.*)$",
+              "file": 2,
+              "line": 3,
+              "column": 4,
+              "message": 6
+            }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": "^.*Scanning for projects...",
+            "endsPattern": "(^.*Quarkus .* started in .*\\.)|(^.* ERROR .* Failed to start)"
+          }
+        }
+      ],
+      "group": "build",
+      "label": "quarkus:dev -pl backend-simple",
+      "command": "./mvnw -pl backend-simple quarkus:dev ",
+      "windows": {
+        "command": ".\\mvnw.cmd -pl ${env:APP_MODULE} quarkus:dev "
+      },
+      "runOptions": { "reevaluateOnRerun": true }
+    },
+    {
+      "type": "shell",
+      "isBackground": true,
+      "problemMatcher": [
+        {
+          "owner": "quarkus",
+          "fileLocation": [
+            "relative",
+            "${workspaceFolder}/src/main/resources/templates"
+          ],
+          "pattern": [
+            {
+              "regexp": "\\[(\\d+)\\]\\s(.*):(\\d+):(\\d+)\\s\\-\\s{(.*)}:\\s(.*)$",
+              "file": 2,
+              "line": 3,
+              "column": 4,
+              "message": 6
+            }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": "^.*Scanning for projects...",
+            "endsPattern": "(^.*Quarkus .* started in .*\\.)|(^.* ERROR .* Failed to start)"
+          }
+        }
+      ],
+      "group": "build",
+      "label": "quarkus:dev -pl backend-other",
+      "command": "./mvnw -pl backend-other quarkus:dev -Ddebug=5006 ",
+      "windows": {
+        "command": ".\\mvnw.cmd -pl ${env:APP_MODULE} quarkus:dev -Ddebug=5006 "
+      },
+      "runOptions": { "reevaluateOnRerun": true }
+    },
+    {
+      "type": "shell",
+      "isBackground": true,
+      "problemMatcher": [
+        {
+          "owner": "quarkus",
+          "fileLocation": [
+            "relative",
+            "${workspaceFolder}/src/main/resources/templates"
+          ],
+          "pattern": [
+            {
+              "regexp": "\\[(\\d+)\\]\\s(.*):(\\d+):(\\d+)\\s\\-\\s{(.*)}:\\s(.*)$",
+              "file": 2,
+              "line": 3,
+              "column": 4,
+              "message": 6
+            }
+          ],
+          "background": {
+            "activeOnStart": true
+          }
+        }
+      ],
+      "group": "build",
+      "label": "package -Pnative",
+      "command": "./mvnw package -Pnative ",
+      "windows": {
+        "command": ".\\mvnw.cmd package -Pnative "
+      }
+    }
+  ]
+}

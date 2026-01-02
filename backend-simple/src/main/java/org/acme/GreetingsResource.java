@@ -12,9 +12,9 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.SecurityContext;
 
-@Path("/api/secure")
+@Path("/api/greets")
 @RequestScoped
-public class SecureResource {
+public class GreetingsResource {
 
     @GET
     @PermitAll

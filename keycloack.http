@@ -16,7 +16,11 @@ Content-Type: application/json
         "client_secret": "{{clientSecret}}",
         "bearer_only": "yes",
         "realm": "secure-api",
-        "scope": "openid"
+        "scope": "openid",
+        "revoke_tokens_on_logout": "yes",
+        "disable_userinfo_header": "yes",
+        "disable_id_token_header": "yes",
+        "disable_access_token_header": "yes"
     }
 }
 
@@ -38,6 +42,18 @@ grant_type=password
 
 @accessToken = {{generateToken.response.body.$.access_token}}
 
-### call secure api
-GET http://localhost:8000/quarkus-api/api/secure
+### call secured api
+GET http://localhost:8000/quarkus-api/api/users/me
+Authorization: Bearer {{accessToken}}
+
+### direct call secured api
+GET http://localhost:8080/api/users/me
+Authorization: Bearer {{accessToken}}
+
+### call api
+GET http://localhost:8000/quarkus-api/api/greets
+Authorization: Bearer {{accessToken}}
+
+### call second api
+GET http://localhost:8000/quarkus-api/api/propagate
 Authorization: Bearer {{accessToken}}

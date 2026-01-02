@@ -1,6 +1,6 @@
 # poc-quarkus-auth
 
-`quarkus dev`
+`mvn -pl backend-simple compile quarkus:dev`
 
 `docker-compose up -d`  
 Maybe the first time, the kong migration and service has to be restart
@@ -37,4 +37,13 @@ Executer les commandes de kong.http
 
 Executer les commandes de keycloack.http
 
-Voir le contenu du token: https://www.jwt.io/
+## Extract user info from the JWT
+
+https://quarkus.io/guides/security-oidc-bearer-token-authentication-tutorial
+
+Add `quarkus-oidc` extension and the `quarkus.oidc.auth-server-url` and `quarkus.oidc.client-id` properties to the `application.properties` file.
+After that the `UsersResource` class can be used to extract user info from the JWT.
+
+## Propagate the access token to the downstream service
+
+Execute `quarkus extension add rest-client-oidc-token-propagation` and Annotate RestClient with `@AccessToken`.
