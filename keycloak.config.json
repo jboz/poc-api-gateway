@@ -1,0 +1,44 @@
+{
+  "id": "390951f4-749f-46ca-a888-e04bcd813ebf",
+  "realm": "secure-api",
+  "enabled": true,
+  "clients": [
+    {
+      "clientId": "secure-api-client",
+      "rootUrl": "http://192.168.1.42:8090",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "z6vL6qyf1TX56fld5lGzsJe6RmebpGfT",
+      "redirectUris": ["*"],
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": true,
+      "protocol": "openid-connect"
+    }
+  ],
+  "roles": {
+    "client": {
+      "secure-api-client": [
+        {
+          "name": "user",
+          "clientRole": true
+        }
+      ]
+    }
+  },
+  "users": [
+    {
+      "username": "testuser",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "test123"
+        }
+      ],
+      "clientRoles": ["user"]
+    }
+  ]
+}

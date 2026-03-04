@@ -9,41 +9,45 @@
 ## 2. Démarrage des services
 
 `docker-compose up -d`
+Bug au premier lancement avec kong, le relancer.
 
 ## 3. Sécurisation avec Kong
 
 Kong est accessible à cette adresse : http://localhost:8002  
-Exécuter les commandes de `kong.http` pour le configurer via son API.  
+Exécuter les commandes de `kong.http` pour le configurer via son API.
 
-Dans ces commandes, on retrouve :  
-   1. création d'un service
-   2. création d'une route vers un backend
-   3. appel du backend via Kong, sans sécurisation
-   4. ajout du plugin key-auth sur la route
-   5. création d'un consommateur key-auth
-   6. génération d'un clé pour ce consommateur
-   7. avec cette config sur la route, le backend n'est plus accessible sans la clé
-   8. appel du backend avec la clé
-   9. ajout d'une autre bric de sécurité avec un plugin rate-limit
+Dans ces commandes, on retrouve :
+
+1.  création d'un service
+2.  création d'une route vers un backend
+3.  appel du backend via Kong, sans sécurisation
+4.  ajout du plugin key-auth sur la route
+5.  création d'un consommateur key-auth
+6.  génération d'un clé pour ce consommateur
+7.  avec cette config sur la route, le backend n'est plus accessible sans la clé
+8.  appel du backend avec la clé
+9.  ajout d'une autre bric de sécurité avec un plugin rate-limit
 
 ## 4. Sécuration avec Keycloak et OIDC
 
-Configuration préalable de keycloak :  
-   1. Log into Keycloak Admin Console http://localhost:8090 (admin/admin)
-   2. Create a new realm named secure-api by clicking the “Keycloak” dropdown
-   3. Create a new application client (click the Client menu):  
-      Client ID: secure-api-client  
-      Client Protocol: openid-connect  
-      Check Client authentication  
-      Check Standard Flow, Standard Token Exchange and Direct acccess grants  
-      Root URL: http://192.168.1.42:8090  
-      Set Valid Redirect URIs to '\*'  
-      Copy the Client Secret (Credentials tab)  
-   4. Create a Role (e.g., user)
-   5. Create a User:  
-         Username: testuser  
-         Password: test123  
-         Assign the user role to this user  
+Configuration préalable de keycloak :
+
+1.  Log into Keycloak Admin Console http://localhost:8090 (admin/admin)
+2.  Create a new realm named secure-api by clicking the “Keycloak” dropdown
+3.  Create a new application client (click the Client menu):  
+    Client ID: secure-api-client  
+    Client Protocol: openid-connect  
+    Check Client authentication  
+    Check Standard Flow, Standard Token Exchange and Direct acccess grants  
+    Root URL: http://192.168.1.42:8090  
+    Set Valid Redirect URIs to '\*'  
+    Copy the Client Secret (Credentials tab)
+4.  Create a Role (e.g., user)
+5.  Create a User:  
+     Username: testuser  
+     Password: test123  
+     Assign the user role to this user
+    In case of error "invalid_grant", complete with email, firstname and lastname
 
 Executer les commandes de `keycloack.http` pour configurer kong via api.  
 Des appels REST pour tester la configuration.
@@ -69,6 +73,6 @@ String email;
 
 ## 5. Propagate the access token to the downstream service
 
-Execute `quarkus extension add rest-client-oidc-token-propagation` and Annotate RestClient with `@AccessToken`.  
+Execute `quarkus extension add rest-client-oidc-token-propagation` and Annotate RestClient with `@AccessToken`.
 
-`mvn -pl backend-other compile quarkus:dev`  
+`mvn -pl backend-other compile quarkus:dev`

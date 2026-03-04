@@ -1,6 +1,6 @@
 @clientId=secure-api-client
 # from keycloak client credentials interface
-@clientSecret=EeNCvstsBLdJoBefaQuq7C8o0SBQwgTL
+@clientSecret=z6vL6qyf1TX56fld5lGzsJe6RmebpGfT
 
 ### enable OIDC in Kong
 # instrospection is mandatory to be able to validate the token
